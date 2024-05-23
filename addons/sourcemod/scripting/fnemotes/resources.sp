@@ -9,6 +9,9 @@
 
 OnMapStart_Resources()
 {
+	if(!g_cvarDownloadResources.BoolValue)
+		return;
+	
 	if (g_iEngine == Engine_Left4Dead)
 	{
 		AddFileToDownloadsTable("models/player/custom_player/foxhound/fortnite_dances_emotes_l4d.mdl");

@@ -1,5 +1,5 @@
 #if defined _fnemotes_included_
-#endinput
+	#endinput
 #endif
 #define _fnemotes_included_
 
@@ -11,7 +11,7 @@
  * @param client    Client's id
  * @return          True / False
  */
-native bool fnemotes_IsClientEmoting(int client);
+native bool	 fnemotes_IsClientEmoting(int client);
 
 /**
  * When a client do a emote
@@ -20,19 +20,21 @@ native bool fnemotes_IsClientEmoting(int client);
  */
 forward void fnemotes_OnEmote(int client);
 
-public SharedPlugin:__pl_fnemotes =
+public SharedPlugin __pl_fnemotes =
 {
-    name = "fnemotes",
-    file = "fortnite_emotes_extended.smx",
-    #if defined REQUIRE_PLUGIN
-    required = 1,
-    #else
-    required = 0,
-    #endif
+	name = "fnemotes",
+	file = "fortnite_emotes_extended.smx",
+#if defined REQUIRE_PLUGIN
+	required = 1,
+#else
+	required = 0,
+#endif
 };
 
+#if !defined REQUIRE_PLUGIN
 public void __pl_fnemotes_SetNTVOptional()
 {
 	MarkNativeAsOptional("fnemotes_IsClientEmoting");
 	MarkNativeAsOptional("fnemotes_OnEmote");
 }
+#endif

@@ -2,526 +2,523 @@
 {
 	"TAG"
 	{
-		"en"			"[{olive}表情动作{default}]"
+		"tr"			"[{olive}Emotes{default}]"
 	}
 
 	"USAGE"
 	{
-		"chi"			"{olive}使用{default}"
+		"tr"			"{olive}Kullanım{default}"
 	}
 
 	"NO_DANCES_ACCESS_FLAG"
 	{
-		"chi"			"您无权使用舞蹈！！"
+		"tr"			"Dances kullanmaya erişiminiz yok!!"
 	}
-
+	
 	"NO_EMOTES_ACCESS_FLAG"
 	{
-		"chi"			"您无权使用表情动作！！"
+		"tr"			"Emotes kullanmaya erişiminiz yok!!"
 	}
 
 	"NOTSURVIVOR"
 	{
-		"chi"			"您不是幸存者！"
+		"tr"			"Bir hayatta kalan değilsin!"
 	}
 
 	"PAUSE_MODE"
 	{
-		"chi"			"您不能在暂停时使用表情动作！"
+		"tr"			"Durakta emote kullanamazsın!"
 	}
 
 	"MUST_BE_ALIVE"
 	{
-		"chi"			"您必须在存活时才能使用！"
+		"tr"			"Bunu kullanmak için hayatta olmalısın!"	
 	}
 
 	"STAY_ON_GROUND"
 	{
-		"chi"			"您必须呆在地上才能使用！"
+		"tr"			"Bunu kullanmak için haraket etmemelisin!"		
 	}
 
 	"COOLDOWN_EMOTES"
 	{
-		"chi"			"冷却中！"
+		"tr"			"Biraz bekle!"		
 	}
 
 	"AMIN_1_INVALID"
 	{
-		"chi"			"参数1无效！！！"
+		"tr"			"Bağımsız değişken 1 geçersiz!!!"		
 	}
 	
 	"CANNOT_USE_NOW"
 	{
-		"chi"			"您现在不能使用！！！"
+		"tr"			"Şu anda kullanamazsın!"		
 	}
 
 	"INVALID_EMOTE_ID"
 	{
-		"chi"			"无效的表情动作编号，应该在(1-86)之间！"
+		"tr"			"Geçersiz Emote ID, (1-86) arasında olmalıdır"	
 	}
 
 	"RANDOM_EMOTE"
 	{
-		"chi"			"随机表情动作"
+		"tr"			"Rastgele Emote"			
 	}
 
 	"RANDOM_DANCE"
 	{
-		"chi"			"随机舞蹈"
+		"tr"			"Rastgele Dans"
 	}	
 
 	"EMOTES_LIST"
 	{
-		"chi"			"表情动作列表"
+		"tr"			"Emotelar Listesi"
 	}
 
 	"DANCES_LIST"
 	{
-		"chi"			"舞蹈列表"
+		"tr"			"Dans Listesi"
 	}		
 
 	"EMOTE_PLAYER"
 	{
-		"chi"			"表情动作玩家"
+		"tr"			"Emote oyuncu"
 	}	
 
 	"SELECT_EMOTE"
 	{
-		"chi"			"选择表情动作"
+		"tr"			"Emote Seç"
 	}
 	
 	"TITLE_MAIM_MENU"
 	{
-		"chi"			"表情动作和舞蹈"
+		"tr"			"Emotelar ve Danslar" 
 	}
 	
 	"TITLE_EMOTES_MENU"
 	{
-		"chi"			"表情动作"
+		"tr"			"Emotelar"
 	}	
 	
 	"TITLE_DANCES_MENU"
 	{
-		"chi"			"舞蹈"
+		"tr"			"Danslar"  
 	}	
 
 	"Emote_Fonzie_Pistol"
 	{
-		"chi"			"手指枪"
+		"tr"			"Parmak silahları"
 	}
 
 	"Emote_Bring_It_On"
 	{
-		"chi"			"到我这儿来"
+		"tr"			"Bana Gel"		
 	}
 
 	"Emote_ThumbsDown"
 	{
-		"chi"			"大拇指向下"
+		"tr"			"Başparmak Aşağı"
 	}
 	
 	"Emote_Celebration_Loop"
 	{
-		"chi"			"庆祝"
+		"tr"			"Kutlama"
 	}
 
 	"Emote_BlowKiss"
 	{
-		"chi"			"飞吻"
+		"tr"			"Öpücük atmak"
 	}
 
 	"Emote_Calculated"
 	{
-		"chi"			"算计"
+		"tr"			"Hesaplanmış"
 	}
 
 	"Emote_Confused"
 	{
-		"chi"			"困惑"
+		"tr"			"Şaşkın"
 	}
 	
 	"Emote_Chug"
 	{
-		"chi"			"嘎嚓嘎嚓"
+		"tr"			"Chug"  
 	}
 
 	"Emote_Cry"
 	{
-		"chi"			"哭泣"
+		"tr"			"Ağlamak"
 	}
 
 	"Emote_DustingOffHands"
 	{
-		"chi"			"堡垒乐队"
-
+		"tr"			"Kale grubu"
 	}
 
 	"Emote_DustOffShoulders"
 	{
-		"chi"			"舞动青春2"
+		"tr"			"2 kadar salla" 
 	}
 	
 	"Emote_Facepalm"
 	{
-		"chi"			"捂脸"
+		"tr"			"Facepalm" 
 	}
 
 	"Emote_Fishing"
 	{
-		"chi"			"陷入圈套"
+		"tr"			"Kancada"
 	}
 
 	"Emote_Flex"
 	{
-		"chi"			"弯曲"
 	}
 
 	"Emote_golfclap"
 	{
-		"chi"			"高尔夫球鼓掌"
+		"tr"			"Golf alkış"  
 	}
 	
 	"Emote_HandSignals"
 	{
-		"chi"			"手示信号"
+		"tr"			"El işaretleri"
 	}
 
 	"Emote_HeelClick"
 	{
-		"chi"			"点击！"
+		"tr"			"Tıkla!"
 	}
 
 	"Emote_Hotstuff"
 	{
-		"chi"			"大人物"
+		"tr"			"Sıcak sayfalar"
 	}
 
 	"Emote_IBreakYou"
 	{
-		"chi"			"断点"
+		"tr"			"Kırılma noktası"
 	}
 	
 	"Emote_IHeartYou"
 	{
-		"chi"			"真爱"
+		"tr"			"Gerçek aşk"  
 	}
 
 	"Emote_Kung-Fu_Salute"
 	{
-		"chi"			"功夫敬礼"
+		"tr"			"Kung-Fu Selamı"
 	}
 
 	"Emote_Laugh"
 	{
-		"chi"			"大笑"
+		"tr"			"Gülmek"
 	}
 
 	"Emote_Luchador"
 	{
-		"chi"			"摔跤手"
+		"tr"			"Savaşçı"
 	}
 	
 	"Emote_Make_It_Rain"
 	{
-		"chi"			"发牌雨"
+		"tr"			"Yağdır"
 	}
 
 	"Emote_NotToday"
 	{
-		"chi"			"不要"
+		"tr"			"Bugün değil"
 	}
 
 	"Emote_RockPaperScissor_Paper"
 	{
-		"chi"			"布"
+		"tr"			"Kağıt"
 	}
 
 	"Emote_RockPaperScissor_Rock"
 	{
-		"chi"			"石头"
+		"tr"			"Taş"
 	}
 	
 	"Emote_RockPaperScissor_Scissor"
 	{
-		"chi"			"剪刀"
+		"tr"			"Taş"
 	}
 
 	"Emote_Salt"
 	{
-		"chi"			"撒盐"
+		"tr"			"Tuz"
 	}
 
 	"Emote_Salute"
 	{
-		"chi"			"敬礼"
+		"tr"			"Sağlık"
 	}
 
 	"Emote_SmoothDrive"
 	{
-		"chi"			"开车"
+		"tr"			"Araba sürmek"
 	}
 	"Emote_Snap"
 	{
-		"chi"			"响指"
+		"tr"			"Ani"
 	}
 
 	"Emote_StageBow"
 	{
-		"chi"			"礼仪"
+		"tr"			"Sahne yay"
 	}
 
 	"Emote_ThumbsUp"
 	{
-		"chi"			"赞许"
+		"tr"			"Başparmak havaya" 
 	}
 	"Emote_Wave2"
 	{
-		"chi"			"敬礼2"
+		"tr"			"Sağlık 2"
 	}
 
 	"Emote_Yeet"
 	{
-		"chi"			"兴奋"
+		"tr"			"Yeet"
 	}
 
 	"DanceMoves"
 	{
-		"chi"			"舞蹈步伐"
+		"tr"			"Dans hareketleri"
 	}
 
 	"Emote_Mask_Off_Intro"
 	{
-		"chi"			"橘子汁"
+		"tr"			"Turuncu Adalet"
 	}
 	
 	"Emote_Zippy_Dance"
 	{
-		"chi"			"粗暴"
+		"tr"			"Neşeli"
 	}
 
 	"ElectroShuffle"
 	{
-		"chi"			"电子曳步舞"
+		"tr"			"Elektro Karıştırma"
 	}
 
 	"Emote_AerobicChamp"
 	{
-		"chi"			"有氧运动"
+		"tr"			"Aerobik"
 	}
 
 	"Emote_Bendy"
 	{
-		"chi"			"柔韧"
+		"tr"			"Bendy"
 	}
 	
 	"Emote_BandOfTheFort"
 	{
-		"chi"			"最好的朋友"
 	}
 
 	"Emote_Boogie_Down_Intro"
 	{
-		"chi"			"布吉舞"
+		"tr"			"Boogie"
 	}
 
 	"Emote_Capoeira"
 	{
-		"chi"			"巴西战舞"
+		"tr"			"Capoeira"
 	}
 
 	"Emote_Charleston"
 	{
-		"chi"			"摩登女"
+		"tr"			"Sineklik"
 	}
 	
 	"Emote_Chicken"
 	{
-		"chi"			"小鸡"
+		"tr"			"Tavuk"
 	}
 
 	"Emote_Dance_NoBones"
 	{
-		"chi"			"无骨"
+		"tr"			"Kemiksiz"
 	}
 
 	"Emote_Dance_Shoot"
 	{
-		"chi"			"天花乱坠"
+		"tr"			"Yutturmaca"
 	}
 
 	"Emote_Dance_SwipeIt"
 	{
-		"chi"			"舞动青春"
+		"tr"			"Salla"
 	}
 	
 	"Emote_Dance_Disco_T3"
 	{
-		"chi"			"狂热迪斯科"
+		"tr"			"Disko ateşi"
 	}
 
 	"Emote_DG_Disco"
 	{
-		"chi"			"狂热迪斯科2"
+		"tr"			"Disko ateşi 2"
 	}
 
 	"Emote_Dance_Worm"
 	{
-		"chi"			"蠕虫"
+		"tr"			"Solucan"
 	}
 
 	"Emote_Dance_Loser"
 	{
-		"chi"			"失败者"
+		"tr"			"L al"
 	}
 	
 	"Emote_Dance_Breakdance"
 	{
-		"chi"			"霹雳舞"
+		"tr"			"BreakDance"
 	}
 
 	"Emote_Dance_Pump"
 	{
-		"chi"			"Pump舞"
+		"tr"			"Pompa"
 	}
 
 	"Emote_Dance_RideThePony"
 	{
-		"chi"			"骑小马"
+		"tr"			"Midilli Yolculuğu"
 	}
 
 	"Emote_Dab"
 	{
-		"chi"			"Dab手势"
+		"tr"			"Dab"
 	}
 
 	"Emote_EasternBloc_Start"
 	{
-		"chi"			"东方集团"
+		"tr"			"Doğu Bloğu"
 	}
 
 	"Emote_FancyFeet"
 	{
-		"chi"			"完美舞步"
+		"tr"			"Rüya Ayakları"
 	}
 
 	"Emote_FlossDance"
 	{
-		"chi"			"甩手舞"
+		"tr"			"Diş ipi"
 	}
 
 	"Emote_FlippnSexy"
 	{
-		"chi"			"Flippn舞"
+		"tr"			"Flippn"
 	}
 
 	"Emote_Fresh"
 	{
-		"chi"			"新鲜"
+		"tr"			"Taze"
 	}
 
 	"Emote_GrooveJam"
 	{
-		"chi"			"Grefg"
+		"tr"			"Grefg"
 	}
 
 	"Emote_guitar"
 	{
-		"chi"			"弹吉他"
+		"tr"			"Gitar"
 	}
 
 	"Emote_Hillbilly_Shuffle_Intro"
 	{
-		"chi"			"曳步舞"
+		"tr"			"Karıştır"
 	}
 
 	"Emote_Hiphop_01"
 	{
-		"chi"			"嘻哈"
+		"tr"			"Hip Hop"
 	}
 
 	"Emote_Hula_Start"
 	{
-		"chi"			"夏威夷草裙舞"
+		"tr"			"Hula Hop"
 	}
 
 	"Emote_InfiniDab_Intro"
 	{
-		"chi"			"无限Dab手势"
+		"tr"			"Sonsuz Dab"
 	}
 
 	"Emote_Intensity_Start"
 	{
-		"chi"			"惊吓"
+		"tr"			"Yoğunluk"
 	}
 
 	"Emote_IrishJig_Start"
 	{
-		"chi"			"土耳其舞"
+		"tr"			"Türk Dabke"
 	}
 
 	"Emote_KoreanEagle"
 	{
-		"chi"			"老鹰"
+		"tr"			"Kartal"
 	}
 
 	"Emote_Kpop_02"
 	{
-		"chi"			"真心"
+		"tr"			"Gerçek kalp"
 	}
 
 	"Emote_LivingLarge"
 	{
-		"chi"			"富裕生活"
+		"tr"			"Büyük Yaşa"
 	}
 
 	"Emote_Maracas"
 	{
-		"chi"			"沙槌"
+		"tr"			"Maracas"
 	}
 
 	"Emote_PopLock"
 	{
-		"chi"			"流行锁"
+		"tr"			"Pop Kilidi"		
 	}
 
 	"Emote_PopRock"
 	{
-		"chi"			"明星魅力"
+		"tr"			"Yıldız gücü"		
 	}
 
 	"Emote_RobotDance"
 	{
-		"chi"			"机械舞"
+		"tr"			"Robot"		
 	}
 
 	"Emote_T-Rex"
 	{
-		"chi"			"霸王龙"
+		"tr"			"T-Rex"		
 	}
 
 	"Emote_TechnoZombie"
 	{
-		"chi"			"被鼓舞"
+		"tr"			"Yeniden canlandırıldı"		
 	}
 
 	"Emote_Twist"
 	{
-		"chi"			"旋转"
+		"tr"			"Dönemeç"		
 	}
 
 	"Emote_WarehouseDance_Start"
 	{
-		"chi"			"生意兴隆"
+		"tr"			"Depo"		
 	}
 
 	"Emote_Wiggle"
 	{
-		"chi"			"蠕动"
+		"tr"			"Kıpırdatmak"		
 	}
 
 	"Emote_Youre_Awesome"
 	{
-		"chi"			"你真厉害"
+		"tr"			"Harikasın"		
 	}
 
 }

@@ -1,162 +1,133 @@
 #if defined _resources_included
- #endinput
+	#endinput
 #endif
 #define _resources_included
+
+/*****************************************************************
+			G L O B A L   V A R S
+*****************************************************************/
+
+#define FNEMOTES_PATH	"data/fnemotes.cfg"
+#define KEY_MODELS_L4D2 "models_l4d2"
+#define KEY_MODELS_L4D	"models_l4d"
+#define KEY_SOUNDS		"sounds"
+#define KEY_SIZE		"size"
+#define MAX_RESOURCES	120
+
+enum struct Resources
+{
+	int	 id;
+	char path[PLATFORM_MAX_PATH];
+}
+
+KeyValues
+	g_kvResources;
+
+Resources
+	g_Models[MAX_RESOURCES],
+	g_Sounds[MAX_RESOURCES];
+
+int
+	g_iModelSize,
+	g_iSoundsSize;
 
 /*****************************************************************
 			F O R W A R D   P U B L I C S
 *****************************************************************/
 
+OnPluginStart_resources()
+{
+	if (!g_cvarDownloadResources.BoolValue)
+		return;
+
+	char sFnemotesPatch[PLATFORM_MAX_PATH];
+	BuildPath(Path_SM, sFnemotesPatch, sizeof(sFnemotesPatch), FNEMOTES_PATH);
+
+	g_kvResources = new KeyValues("Resources");
+
+	if (!g_kvResources.ImportFromFile(sFnemotesPatch))
+		SetFailState("Couldn't load %s", sFnemotesPatch);
+	else
+		ReadResources();
+
+	RegConsoleCmd("sm_emotes_resources", Command_resources);
+}
+
+public Action Command_resources(int client, int args)
+{
+	ReplyToCommand(client, "--------------------");
+	for (int i = 1; i <= g_iModelSize; i++)
+	{
+		ReplyToCommand(client, "Model [%d] - [%s]", i, g_Models[i].path);
+	}
+
+	ReplyToCommand(client, "--------------------");
+	for (int i = 1; i <= g_iSoundsSize; i++)
+	{
+		ReplyToCommand(client, "Sound [%d] - [%s]", i, g_Sounds[i].path);
+	}
+	ReplyToCommand(client, "--------------------");
+
+	return Plugin_Handled;
+}
+
 OnMapStart_Resources()
 {
-	if(!g_cvarDownloadResources.BoolValue)
+	if (!g_cvarDownloadResources.BoolValue)
 		return;
-	
-	if (g_iEngine == Engine_Left4Dead)
+
+	for (int i = 1; i <= g_iModelSize; i++)
 	{
-		AddFileToDownloadsTable("models/player/custom_player/foxhound/fortnite_dances_emotes_l4d.mdl");
-		AddFileToDownloadsTable("models/player/custom_player/foxhound/fortnite_dances_emotes_l4d.vvd");
-		AddFileToDownloadsTable("models/player/custom_player/foxhound/fortnite_dances_emotes_l4d.dx90.vtx");
-	}
-	else if (g_iEngine == Engine_Left4Dead2)
-	{
-		AddFileToDownloadsTable("models/player/custom_player/foxhound/fortnite_dances_emotes_ok.mdl");
-		AddFileToDownloadsTable("models/player/custom_player/foxhound/fortnite_dances_emotes_ok.vvd");
-		AddFileToDownloadsTable("models/player/custom_player/foxhound/fortnite_dances_emotes_ok.dx90.vtx");
+		AddFileToDownloadsTable(g_Models[i].path);
 	}
 
-	// edit
-	// add the sound file routes here
+	for (int i = 1; i <= g_iSoundsSize; i++)
+	{
+		AddFileToDownloadsTable(g_Sounds[i].path);
+	}
 
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/ninja_dance_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/dance_soldier_03.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Hip_Hop_Good_Vibes_Mix_01_Loop.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_zippy_A.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_electroshuffle_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_aerobics_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_music_emotes_bendy.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_bandofthefort_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_boogiedown.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_flapper_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_chicken_foley_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_cry.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_music_boneless.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emotes_music_shoot_v7.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Athena_Emotes_Music_SwipeIt.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_disco.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_worm_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_music_emotes_takethel.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_breakdance_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_Dance_Pump.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_ridethepony_music_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_facepalm_foley_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Athena_Emotes_OnTheHook_02.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_floss_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_FlippnSexy.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_fresh_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_groove_jam_a.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/br_emote_shred_guitar_mix_03_loop.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_HeelClick.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/s5_hiphop_breakin_132bmp_loop.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_Hotstuff.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_hula_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_infinidab.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_Intensity.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_irish_jig_foley_music_loop.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Athena_Music_Emotes_KoreanEagle.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_kpop_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_laugh_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_LivingLarge_A.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_Luchador.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_Hillbilly_Shuffle.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_samba_new_B.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_makeitrain_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Athena_Emote_PopLock.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_PopRock_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_robot_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_salute_foley_01.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_Snap1.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_stagebow.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_Dino_Complete.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_founders_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emotes_music_twist.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_Warehouse.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Wiggle_Music_Loop.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/Emote_Yeet.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/youre_awesome_emote_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emotes_lankylegs_loop_02.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/eastern_bloc_musc_setup_d.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/athena_emote_hot_music.mp3");
-	AddFileToDownloadsTable("sound/kodua/fortnite_emotes/emote_capoeira.mp3");
-
-	// this dont touch
 	if (g_iEngine == Engine_Left4Dead)
-		PrecacheModel("models/player/custom_player/foxhound/fortnite_dances_emotes_l4d.mdl", true);
-	else if (g_iEngine == Engine_Left4Dead2)
-		PrecacheModel("models/player/custom_player/foxhound/fortnite_dances_emotes_ok.mdl", true);
+		PrecacheModel("models/fortnite_emotes/fnemotes_l4d.mdl", true);
 
-	// edit
-	// add mp3 files without sound/
-	// add wav files with */
+	if (g_iEngine == Engine_Left4Dead2)
+		PrecacheModel("models/fortnite_emotes/fnemotes_l4d2.mdl", true);
 
-	PrecacheSound("kodua/fortnite_emotes/ninja_dance_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/dance_soldier_03.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Hip_Hop_Good_Vibes_Mix_01_Loop.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_zippy_A.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_electroshuffle_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_aerobics_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_music_emotes_bendy.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_bandofthefort_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_boogiedown.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_capoeira.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_flapper_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_chicken_foley_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_cry.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_music_boneless.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emotes_music_shoot_v7.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Athena_Emotes_Music_SwipeIt.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_disco.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_worm_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_music_emotes_takethel.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_breakdance_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_Dance_Pump.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_ridethepony_music_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_facepalm_foley_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Athena_Emotes_OnTheHook_02.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_floss_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_FlippnSexy.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_fresh_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_groove_jam_a.mp3");
-	PrecacheSound("kodua/fortnite_emotes/br_emote_shred_guitar_mix_03_loop.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_HeelClick.mp3");
-	PrecacheSound("kodua/fortnite_emotes/s5_hiphop_breakin_132bmp_loop.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_Hotstuff.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_hula_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_infinidab.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_Intensity.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_irish_jig_foley_music_loop.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Athena_Music_Emotes_KoreanEagle.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_kpop_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_laugh_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_LivingLarge_A.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_Luchador.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_Hillbilly_Shuffle.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_samba_new_B.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_makeitrain_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Athena_Emote_PopLock.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_PopRock_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_robot_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_salute_foley_01.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_Snap1.mp3");
-	PrecacheSound("kodua/fortnite_emotes/emote_stagebow.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_Dino_Complete.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_founders_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emotes_music_twist.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_Warehouse.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Wiggle_Music_Loop.mp3");
-	PrecacheSound("kodua/fortnite_emotes/Emote_Yeet.mp3");
-	PrecacheSound("kodua/fortnite_emotes/youre_awesome_emote_music.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emotes_lankylegs_loop_02.mp3");
-	PrecacheSound("kodua/fortnite_emotes/eastern_bloc_musc_setup_d.mp3");
-	PrecacheSound("kodua/fortnite_emotes/athena_emote_hot_music.mp3");
+	char
+		g_sSounds[MAX_RESOURCES];
+	for (int i = 1; i <= g_iSoundsSize; i++)
+	{
+		Format(g_sSounds, sizeof(g_sSounds), g_Sounds[i].path);
+		ReplaceStringEx(g_sSounds, sizeof(g_sSounds), "sound/", ""); // Remove sound/ prefix
+		PrecacheSound(g_sSounds);
+	}
+}
+
+void ReadResources()
+{
+	g_kvResources.Rewind();
+
+	if (g_iEngine == Engine_Left4Dead)
+		g_kvResources.JumpToKey(KEY_MODELS_L4D);
+
+	if (g_iEngine == Engine_Left4Dead2)
+		g_kvResources.JumpToKey(KEY_MODELS_L4D2);
+
+	g_iModelSize = g_kvResources.GetNum(KEY_SIZE, -1);
+
+	char sIndex[4];
+	for (int i = 1; i <= g_iModelSize; i++)
+	{
+		IntToString(i, sIndex, sizeof(sIndex));
+		g_kvResources.GetString(sIndex, g_Models[i].path, PLATFORM_MAX_PATH);
+	}
+
+	g_kvResources.GoBack();
+	g_kvResources.JumpToKey(KEY_SOUNDS);
+	g_iSoundsSize = g_kvResources.GetNum(KEY_SIZE, -1);
+
+	for (int i = 1; i <= g_iSoundsSize; i++)
+	{
+		IntToString(i, sIndex, sizeof(sIndex));
+		g_kvResources.GetString(sIndex, g_Sounds[i].path, PLATFORM_MAX_PATH);
+	}
 }

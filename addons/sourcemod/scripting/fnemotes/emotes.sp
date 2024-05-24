@@ -96,9 +96,9 @@ Action CreateEmote(int client, const char[] anim1, const char[] anim2, const cha
 		DispatchKeyValue(EmoteEnt, "targetname", emoteEntName);
 
 		if (g_iEngine == Engine_Left4Dead)
-			DispatchKeyValue(EmoteEnt, "model", "models/player/custom_player/foxhound/fortnite_dances_emotes_l4d.mdl");
+			DispatchKeyValue(EmoteEnt, "model", "models/fortnite_emotes/fnemotes_l4d.mdl");
 		else if (g_iEngine == Engine_Left4Dead2)
-			DispatchKeyValue(EmoteEnt, "model", "models/player/custom_player/foxhound/fortnite_dances_emotes_ok.mdl");
+			DispatchKeyValue(EmoteEnt, "model", "models/fortnite_emotes/fnemotes_l4d2.mdl");
 
 		DispatchKeyValue(EmoteEnt, "solid", "0");
 		DispatchKeyValue(EmoteEnt, "rendermode", "0");
@@ -150,7 +150,7 @@ Action CreateEmote(int client, const char[] anim1, const char[] anim2, const cha
 				else
 					FormatEx(soundNameBuffer, sizeof(soundNameBuffer), "%s", soundName);
 
-				FormatEx(g_sEmoteSound[client], PLATFORM_MAX_PATH, "kodua/fortnite_emotes/%s.mp3", soundNameBuffer);
+				FormatEx(g_sEmoteSound[client], PLATFORM_MAX_PATH, "fortnite_emotes/%s.mp3", soundNameBuffer);
 
 				EmitSoundToAll(g_sEmoteSound[client], EmoteSoundEnt, SNDCHAN_AUTO, SNDLEVEL_CONVO, _, g_cvarSoundVolume.FloatValue, _, _, vec, _, _, _);
 			}

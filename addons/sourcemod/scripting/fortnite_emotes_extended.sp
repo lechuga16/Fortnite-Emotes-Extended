@@ -108,7 +108,7 @@ public Plugin myinfo =
 	name		= "SM Fortnite Emotes Extended - L4D Version",
 	author		= "Kodua, Franc1sco franug, TheBO$$, Foxhound, lechuga",
 	description = "This plugin is for demonstration of some animations from Fortnite in L4D",
-	version		= "1.5",
+	version		= "1.6",
 	url			= "https://github.com/lechuga16/Fortnite-Emotes-Extended"
 };
 
@@ -178,15 +178,15 @@ public void OnPluginStart()
 	HookEvent("round_start", Event_Start);
 	HookEvent("player_team", Event_PlayerTeam);
 
-	g_cvarEmotesSounds	 = CreateConVar("sm_emotes_sounds", "1", "Enable/Disable sounds for emotes.", CVAR_FLAGS, true, 0.0, true, 1.0);
-	g_cvarCooldown		 = CreateConVar("sm_emotes_cooldown", "2.0", "Cooldown for emotes in seconds. 0 = no cooldown.", CVAR_FLAGS, true, 0.0);
-	g_cvarSoundVolume	 = CreateConVar("sm_emotes_soundvolume", "1.0", "Sound volume for the emotes.", CVAR_FLAGS, true, 0.0, true, 1.0);
-	g_cvarFlagEmotesMenu = CreateConVar("sm_emotes_admin_flag_menu", "", "admin flag for emotes (empty for all players)", CVAR_FLAGS);
-	g_cvarFlagDancesMenu = CreateConVar("sm_dances_admin_flag_menu", "", "admin flag for dances (empty for all players)", CVAR_FLAGS);
-	g_cvarHideWeapons	 = CreateConVar("sm_emotes_hide_weapons", "1", "Hide weapons when dancing", CVAR_FLAGS, true, 0.0, true, 1.0);
-	g_cvarHidePlayers	 = CreateConVar("sm_emotes_hide_enemies", "0", "Hide enemy players when dancing", CVAR_FLAGS, true, 0.0, true, 1.0);
-	g_cvarTeleportBack	 = CreateConVar("sm_emotes_teleportonend", "1", "Teleport back to the exact position when he started to dance. (Some maps need this for teleport triggers)", CVAR_FLAGS, true, 0.0, true, 1.0);
-	g_cvarSpeed			 = CreateConVar("sm_emotes_speed", "1.0", "Sets the playback speed of the animation. default (1.0)", CVAR_FLAGS, true, 0.0);
+	g_cvarEmotesSounds		= CreateConVar("sm_emotes_sounds", "1", "Enable/Disable sounds for emotes.", CVAR_FLAGS, true, 0.0, true, 1.0);
+	g_cvarCooldown			= CreateConVar("sm_emotes_cooldown", "2.0", "Cooldown for emotes in seconds. 0 = no cooldown.", CVAR_FLAGS, true, 0.0);
+	g_cvarSoundVolume		= CreateConVar("sm_emotes_soundvolume", "1.0", "Sound volume for the emotes.", CVAR_FLAGS, true, 0.0, true, 1.0);
+	g_cvarFlagEmotesMenu	= CreateConVar("sm_emotes_admin_flag_menu", "", "admin flag for emotes (empty for all players)", CVAR_FLAGS);
+	g_cvarFlagDancesMenu	= CreateConVar("sm_dances_admin_flag_menu", "", "admin flag for dances (empty for all players)", CVAR_FLAGS);
+	g_cvarHideWeapons		= CreateConVar("sm_emotes_hide_weapons", "1", "Hide weapons when dancing", CVAR_FLAGS, true, 0.0, true, 1.0);
+	g_cvarHidePlayers		= CreateConVar("sm_emotes_hide_enemies", "0", "Hide enemy players when dancing", CVAR_FLAGS, true, 0.0, true, 1.0);
+	g_cvarTeleportBack		= CreateConVar("sm_emotes_teleportonend", "1", "Teleport back to the exact position when he started to dance. (Some maps need this for teleport triggers)", CVAR_FLAGS, true, 0.0, true, 1.0);
+	g_cvarSpeed				= CreateConVar("sm_emotes_speed", "1.0", "Sets the playback speed of the animation. default (1.0)", CVAR_FLAGS, true, 0.0);
 	g_cvarDownloadResources = CreateConVar("sm_emotes_download_resources", "1", "Download method for the resources", CVAR_FLAGS, true, 0.0, true, 1.0);
 
 	RegConsoleCmd("sm_emote", Command_Menu);
@@ -196,6 +196,7 @@ public void OnPluginStart()
 
 	AutoExecConfig(true, "fortnite_emotes_extended_l4d");
 
+	OnPluginStart_resources();
 	OnPluginStart_menu();
 	OnPluginStart_vipcore();
 }
@@ -351,6 +352,7 @@ public void VIP_OnVIPLoaded()
 /****************************************************************
 			C A L L B A C K   F U N C T I O N S
 ****************************************************************/
+
 public void Event_PAfk(Handle event, const char[] name, bool dontBroadcast)
 {
 	int client = GetClientOfUserId(GetEventInt(event, "player"));

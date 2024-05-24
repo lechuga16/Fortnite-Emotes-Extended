@@ -102,6 +102,14 @@ OnMapStart_Resources()
 	}
 }
 
+/*****************************************************************
+			P L U G I N   F U N C T I O N S
+*****************************************************************/
+
+/**
+ * Reads the resources from the keyvalue file and populates the g_Models and g_Sounds arrays.
+ * This function is used to retrieve the paths of models and sounds for the Fortnite emotes downloader.
+ */
 void ReadResources()
 {
 	g_kvResources.Rewind();

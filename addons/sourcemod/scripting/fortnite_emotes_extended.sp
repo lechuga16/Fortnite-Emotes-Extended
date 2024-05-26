@@ -102,20 +102,18 @@ float
 /*****************************************************************
 			P L U G I N   I N F O
 *****************************************************************/
-
 public Plugin myinfo =
 {
 	name		= "SM Fortnite Emotes Extended - L4D Version",
 	author		= "Kodua, Franc1sco franug, TheBO$$, Foxhound, lechuga",
 	description = "This plugin is for demonstration of some animations from Fortnite in L4D",
-	version		= "1.6",
+	version		= "1.6.1",
 	url			= "https://github.com/lechuga16/Fortnite-Emotes-Extended"
 };
 
 /*****************************************************************
 			F O R W A R D   P U B L I C S
 *****************************************************************/
-
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
 	if (!L4D_IsEngineLeft4Dead())
@@ -268,6 +266,11 @@ Action Command_Admin_Emotes(int client, int args)
 	return Plugin_Handled;
 }
 
+public void OnConfigsExecuted()
+{
+	OnConfigsExecuted_resources();
+}
+
 public void OnMapStart()
 {
 	OnMapStart_Resources();
@@ -312,7 +315,6 @@ public void OnClientDisconnect(int client)
 /*****************************************************************
 			F O R W A R D   P L U G I N S
 *****************************************************************/
-
 public Action OnPlayerRunCmd(int client, int& iButtons, int& iImpulse, float fVelocity[3], float fAngles[3], int& iWeapon)
 {
 	if (g_bClientDancing[client] && !(GetEntityFlags(client) & FL_ONGROUND))
@@ -352,7 +354,6 @@ public void VIP_OnVIPLoaded()
 /****************************************************************
 			C A L L B A C K   F U N C T I O N S
 ****************************************************************/
-
 public void Event_PAfk(Handle event, const char[] name, bool dontBroadcast)
 {
 	int client = GetClientOfUserId(GetEventInt(event, "player"));

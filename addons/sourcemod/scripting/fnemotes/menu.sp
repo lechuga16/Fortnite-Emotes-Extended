@@ -122,42 +122,18 @@ Action EmotesMenu(int client)
 	Format(title, sizeof(title), "%T:", "TITLE_EMOTES_MENU", client);
 	menu.SetTitle(title);
 
-	AddTranslatedMenuItem(menu, "1", "Emote_Fonzie_Pistol", client);
-	AddTranslatedMenuItem(menu, "2", "Emote_Bring_It_On", client);
-	AddTranslatedMenuItem(menu, "3", "Emote_ThumbsDown", client);
-	AddTranslatedMenuItem(menu, "4", "Emote_ThumbsUp", client);
-	AddTranslatedMenuItem(menu, "5", "Emote_Celebration_Loop", client);
-	AddTranslatedMenuItem(menu, "6", "Emote_BlowKiss", client);
-	AddTranslatedMenuItem(menu, "7", "Emote_Calculated", client);
-	AddTranslatedMenuItem(menu, "8", "Emote_Confused", client);
-	AddTranslatedMenuItem(menu, "9", "Emote_Chug", client);
-	AddTranslatedMenuItem(menu, "10", "Emote_Cry", client);
-	AddTranslatedMenuItem(menu, "11", "Emote_DustingOffHands", client);
-	AddTranslatedMenuItem(menu, "12", "Emote_DustOffShoulders", client);
-	AddTranslatedMenuItem(menu, "13", "Emote_Facepalm", client);
-	AddTranslatedMenuItem(menu, "14", "Emote_Fishing", client);
-	AddTranslatedMenuItem(menu, "15", "Emote_Flex", client);
-	AddTranslatedMenuItem(menu, "16", "Emote_golfclap", client);
-	AddTranslatedMenuItem(menu, "17", "Emote_HandSignals", client);
-	AddTranslatedMenuItem(menu, "18", "Emote_HeelClick", client);
-	AddTranslatedMenuItem(menu, "19", "Emote_Hotstuff", client);
-	AddTranslatedMenuItem(menu, "20", "Emote_IBreakYou", client);
-	AddTranslatedMenuItem(menu, "21", "Emote_IHeartYou", client);
-	AddTranslatedMenuItem(menu, "22", "Emote_Kung-Fu_Salute", client);
-	AddTranslatedMenuItem(menu, "23", "Emote_Laugh", client);
-	AddTranslatedMenuItem(menu, "24", "Emote_Luchador", client);
-	AddTranslatedMenuItem(menu, "25", "Emote_Make_It_Rain", client);
-	AddTranslatedMenuItem(menu, "26", "Emote_NotToday", client);
-	AddTranslatedMenuItem(menu, "27", "Emote_RockPaperScissor_Paper", client);
-	AddTranslatedMenuItem(menu, "28", "Emote_RockPaperScissor_Rock", client);
-	AddTranslatedMenuItem(menu, "29", "Emote_RockPaperScissor_Scissor", client);
-	AddTranslatedMenuItem(menu, "30", "Emote_Salt", client);
-	AddTranslatedMenuItem(menu, "31", "Emote_Salute", client);
-	AddTranslatedMenuItem(menu, "32", "Emote_SmoothDrive", client);
-	AddTranslatedMenuItem(menu, "33", "Emote_Snap", client);
-	AddTranslatedMenuItem(menu, "34", "Emote_StageBow", client);
-	AddTranslatedMenuItem(menu, "35", "Emote_Wave2", client);
-	AddTranslatedMenuItem(menu, "36", "Emote_Yeet", client);
+	for (int i = 1; i <= g_iFilesFnemotesCounter; i++)
+	{
+		for (int j = 1; j <= g_iEmotesSize[i]; j++)
+		{
+			char
+				sIndex[2];
+
+			IntToString(j, sIndex, sizeof(sIndex));
+			AddTranslatedMenuItem(menu, sIndex, g_Emotes[i][j].name, client);
+			PrintToServer("Emote: %s", g_Emotes[i][j].name);
+		}
+	}
 
 	menu.ExitButton		= true;
 	menu.ExitBackButton = true;
@@ -280,54 +256,18 @@ Action DancesMenu(int client)
 	Format(title, sizeof(title), "%T:", "TITLE_DANCES_MENU", client);
 	menu.SetTitle(title);
 
-	AddTranslatedMenuItem(menu, "1", "DanceMoves", client);
-	AddTranslatedMenuItem(menu, "2", "Emote_Mask_Off_Intro", client);
-	AddTranslatedMenuItem(menu, "3", "Emote_Zippy_Dance", client);
-	AddTranslatedMenuItem(menu, "4", "ElectroShuffle", client);
-	AddTranslatedMenuItem(menu, "5", "Emote_AerobicChamp", client);
-	AddTranslatedMenuItem(menu, "6", "Emote_Bendy", client);
-	AddTranslatedMenuItem(menu, "7", "Emote_BandOfTheFort", client);
-	AddTranslatedMenuItem(menu, "8", "Emote_Boogie_Down_Intro", client);
-	AddTranslatedMenuItem(menu, "9", "Emote_Capoeira", client);
-	AddTranslatedMenuItem(menu, "10", "Emote_Charleston", client);
-	AddTranslatedMenuItem(menu, "11", "Emote_Chicken", client);
-	AddTranslatedMenuItem(menu, "12", "Emote_Dance_NoBones", client);
-	AddTranslatedMenuItem(menu, "13", "Emote_Dance_Shoot", client);
-	AddTranslatedMenuItem(menu, "14", "Emote_Dance_SwipeIt", client);
-	AddTranslatedMenuItem(menu, "15", "Emote_Dance_Disco_T3", client);
-	AddTranslatedMenuItem(menu, "16", "Emote_DG_Disco", client);
-	AddTranslatedMenuItem(menu, "17", "Emote_Dance_Worm", client);
-	AddTranslatedMenuItem(menu, "18", "Emote_Dance_Loser", client);
-	AddTranslatedMenuItem(menu, "19", "Emote_Dance_Breakdance", client);
-	AddTranslatedMenuItem(menu, "20", "Emote_Dance_Pump", client);
-	AddTranslatedMenuItem(menu, "21", "Emote_Dance_RideThePony", client);
-	AddTranslatedMenuItem(menu, "22", "Emote_Dab", client);
-	AddTranslatedMenuItem(menu, "23", "Emote_EasternBloc_Start", client);
-	AddTranslatedMenuItem(menu, "24", "Emote_FancyFeet", client);
-	AddTranslatedMenuItem(menu, "25", "Emote_FlossDance", client);
-	AddTranslatedMenuItem(menu, "26", "Emote_FlippnSexy", client);
-	AddTranslatedMenuItem(menu, "27", "Emote_Fresh", client);
-	AddTranslatedMenuItem(menu, "28", "Emote_GrooveJam", client);
-	AddTranslatedMenuItem(menu, "29", "Emote_guitar", client);
-	AddTranslatedMenuItem(menu, "30", "Emote_Hillbilly_Shuffle_Intro", client);
-	AddTranslatedMenuItem(menu, "31", "Emote_Hiphop_01", client);
-	AddTranslatedMenuItem(menu, "32", "Emote_Hula_Start", client);
-	AddTranslatedMenuItem(menu, "33", "Emote_InfiniDab_Intro", client);
-	AddTranslatedMenuItem(menu, "34", "Emote_Intensity_Start", client);
-	AddTranslatedMenuItem(menu, "35", "Emote_IrishJig_Start", client);
-	AddTranslatedMenuItem(menu, "36", "Emote_KoreanEagle", client);
-	AddTranslatedMenuItem(menu, "37", "Emote_Kpop_02", client);
-	AddTranslatedMenuItem(menu, "38", "Emote_LivingLarge", client);
-	AddTranslatedMenuItem(menu, "39", "Emote_Maracas", client);
-	AddTranslatedMenuItem(menu, "40", "Emote_PopLock", client);
-	AddTranslatedMenuItem(menu, "41", "Emote_PopRock", client);
-	AddTranslatedMenuItem(menu, "42", "Emote_RobotDance", client);
-	AddTranslatedMenuItem(menu, "43", "Emote_T-Rex", client);
-	AddTranslatedMenuItem(menu, "44", "Emote_TechnoZombie", client);
-	AddTranslatedMenuItem(menu, "45", "Emote_Twist", client);
-	AddTranslatedMenuItem(menu, "46", "Emote_WarehouseDance_Start", client);
-	AddTranslatedMenuItem(menu, "47", "Emote_Wiggle", client);
-	AddTranslatedMenuItem(menu, "48", "Emote_Youre_Awesome", client);
+	for (int i = 1; i <= g_iFilesFnemotesCounter; i++)
+	{
+		for (int j = 1; j <= g_iDancesSize[i]; j++)
+		{
+			char
+				sIndex[2];
+
+			IntToString(j, sIndex, sizeof(sIndex));
+			AddTranslatedMenuItem(menu, sIndex, g_Dances[i][j].name, client);
+			PrintToServer("Dance: %s", g_Dances[i][j].name);
+		}
+	}
 
 	menu.ExitButton		= true;
 	menu.ExitBackButton = true;

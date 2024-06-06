@@ -62,6 +62,7 @@
 
 	"Emote_Fishing"
 	{
+		"es"			"Pescando"
 	}
 
 	"Emote_Flex"

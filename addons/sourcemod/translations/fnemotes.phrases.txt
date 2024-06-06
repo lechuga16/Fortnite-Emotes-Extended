@@ -56,9 +56,14 @@
 		"en"			"You can't use it right now!"
 	}
 
+	"INVALID_CONFIG_ID"
+	{
+		"en"			"Invalid Config ID, Should be between (1-%d) or 0 for random"
+	}
+
 	"INVALID_EMOTE_ID"
 	{
-		"en"			"Invalid Emote ID, Should be between (1-86)"
+		"en"			"Invalid Emote ID, Should be between (1-&d) or 0 for random"
 	}
 
 	"RANDOM_EMOTE"
@@ -100,7 +105,12 @@
 	{
 		"en"			"Emotes"
 	}	
-	
+
+	"ERROR_EMOTE_INFO"
+	{
+		"en"			"{red}error{default} getting info from {red}%s{default}"
+	}
+
 	"TITLE_DANCES_MENU"
 	{
 		"en"			"Dances"

@@ -42,9 +42,6 @@
 #define HIDEHUD_CROSSHAIR	  (1 << 8)
 #define CVAR_FLAGS			  FCVAR_NOTIFY
 
-TopMenu
-	hTopMenu;
-
 ConVar
 	g_cvarHidePlayers,
 
@@ -62,7 +59,6 @@ int
 	g_iEmoteEnt[MAXPLAYERS + 1],
 	g_iEmoteSoundEnt[MAXPLAYERS + 1],
 
-	g_EmotesTarget[MAXPLAYERS + 1],
 	g_iWeaponHandEnt[MAXPLAYERS + 1],
 
 	playerModels[MAXPLAYERS + 1],
@@ -78,7 +74,6 @@ bool
 
 	g_bLateload,
 	g_bVipCore	 = false,
-	g_bAdminMenu = false,
 	g_bPause	 = false;
 
 Handle
@@ -131,7 +126,6 @@ public void OnAllPluginsLoaded()
 {
 	g_bVipCore	 = LibraryExists("vip_core");
 	g_bPause	 = LibraryExists("pause");
-	g_bAdminMenu = LibraryExists("adminmenu");
 }
 
 public void OnLibraryRemoved(const char[] sName)
@@ -141,9 +135,6 @@ public void OnLibraryRemoved(const char[] sName)
 
 	if (StrEqual(sName, "pause"))
 		g_bPause = false;
-
-	if (StrEqual(sName, "adminmenu"))
-		g_bAdminMenu = false;
 }
 
 public void OnLibraryAdded(const char[] sName)
@@ -153,9 +144,6 @@ public void OnLibraryAdded(const char[] sName)
 
 	if (StrEqual(sName, "pause"))
 		g_bPause = true;
-
-	if (StrEqual(sName, "adminmenu"))
-		g_bAdminMenu = true;
 }
 
 public void OnPluginStart()
@@ -188,14 +176,13 @@ public void OnPluginStart()
 	g_cvarDownloadResources = CreateConVar("sm_emotes_download_resources", "1", "Download method for the resources", CVAR_FLAGS, true, 0.0, true, 1.0);
 
 	RegConsoleCmd("sm_emote", Command_Menu);
-	RegConsoleCmd("sm_dance", Command_Menu);
-	RegAdminCmd("sm_setemote", Command_Admin_Emotes, ADMFLAG_GENERIC, "[SM] Usage: sm_setemotes <#userid|name> [Emote ID]", "");
-	RegAdminCmd("sm_setdance", Command_Admin_Emotes, ADMFLAG_GENERIC, "[SM] Usage: sm_setdance <#userid|name> [Emote ID]", "");
+	RegConsoleCmd("sm_dance", Command_Dance);
+	RegAdminCmd("sm_setemote", Command_SetEmote, ADMFLAG_GENERIC);
+	RegAdminCmd("sm_setdance", Command_SetDance, ADMFLAG_GENERIC);
 
 	AutoExecConfig(true, "fortnite_emotes_extended_l4d");
 
 	OnPluginStart_resources();
-	OnPluginStart_menu();
 	OnPluginStart_vipcore();
 }
 
@@ -204,63 +191,170 @@ public Action Command_Menu(int client, int args)
 	if (!IsValidClient(client))
 		return Plugin_Handled;
 
-	if (g_bVipCore)
-	{
-		if (VIP_IsClientVIP(client))
-			Menu_Dance(client);
-		else
-			CReplyToCommand(client, "%t %t", "TAG", "NO_DANCES_ACCESS_FLAG");
+	if (IsValidAccess(client))
+		Menu_Main(client);
+	else
+		CReplyToCommand(client, "%t %t", "TAG", "NO_EMOTES_ACCESS_FLAG");
 
+	return Plugin_Handled;
+}
+
+public Action Command_Dance(int client, int args)
+{
+	if (!IsValidClient(client))
 		return Plugin_Handled;
-	}
 
-	char sFlagAdmin[32];
-	g_cvarFlagEmotesMenu.GetString(sFlagAdmin, sizeof(sFlagAdmin));
-
-	if (CheckAdminFlags(client, ReadFlagString(sFlagAdmin)))
-		Menu_Dance(client);
+	if (IsValidAccess(client))
+		Menu_Main(client);
 	else
 		CReplyToCommand(client, "%t %t", "TAG", "NO_DANCES_ACCESS_FLAG");
 
 	return Plugin_Handled;
 }
 
-Action Command_Admin_Emotes(int client, int args)
+Action Command_SetEmote(int client, int args)
 {
-	if (args < 1)
+	if (args != 1 && args != 3)
 	{
-		CReplyToCommand(client, "%t: sm_setemotes <#userid|name> [Emote ID]", "USAGE");
+		CReplyToCommand(client, "%t: sm_setemote <#userid|name> <configid|blank:random> <emoteid|blank:random>", "USAGE");
 		return Plugin_Handled;
 	}
 
-	char arg[65];
-	GetCmdArg(1, arg, sizeof(arg));
+	if (IsValidAccess(client))
+		CReplyToCommand(client, "%t %t", "TAG", "NO_EMOTES_ACCESS_FLAG");
 
-	int amount = 1;
-	if (args > 1)
-	{
-		char arg2[3];
-		GetCmdArg(2, arg2, sizeof(arg2));
-		if (StringToIntEx(arg2, amount) < 1 || StringToIntEx(arg2, amount) > 86)
-		{
-			CReplyToCommand(client, "%t %t", "TAG", "INVALID_EMOTE_ID");
-			return Plugin_Handled;
-		}
-	}
+	char target[65];
+	GetCmdArg(1, target, sizeof(target));
 
-	char target_name[MAX_TARGET_LENGTH];
-	int	 target_list[MAXPLAYERS], target_count;
-	bool tn_is_ml;
+	char
+		target_name[MAX_TARGET_LENGTH];
 
-	if ((target_count = ProcessTargetString(arg, client, target_list, MAXPLAYERS, COMMAND_FILTER_ALIVE, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+	int
+		target_list[MAXPLAYERS],
+		target_count;
+
+	bool
+		tn_is_ml;
+
+	if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS, COMMAND_FILTER_ALIVE, target_name, sizeof(target_name), tn_is_ml)) <= 0)
 	{
 		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
 	}
 
+	if (args == 3)
+	{
+		for (int i = 0; i < target_count; i++)
+		{
+			CreateRandomEmote(target_list[i]);
+		}
+	}
+
+	int iFile = GetCmdArgInt(2);
+	if (!CheckConfig(iFile))
+	{
+		CReplyToCommand(client, "%t %t", "TAG", "INVALID_CONFIG_ID", g_iFilesFnemotesCounter);
+		return Plugin_Handled;
+	}
+
+	int iItem = GetCmdArgInt(3);
+	if (!CheckEmote(iFile, iItem))
+	{
+		CReplyToCommand(client, "%t %t", "TAG", "INVALID_EMOTE_ID", g_iEmotesSize[iFile]);
+		return Plugin_Handled;
+	}
+
 	for (int i = 0; i < target_count; i++)
 	{
-		PerformEmote(client, target_list[i], amount);
+		char
+			sAnim1[32],
+			sAnim2[32],
+			sSound[64];
+
+		bool
+			bIsLoop;
+
+		if (!GetEmoteInfo(iFile, g_Emotes[iFile][iItem].name, sAnim1, sizeof(sAnim1), sAnim2, sizeof(sAnim2), sSound, sizeof(sSound), bIsLoop))
+		{
+			CPrintToChat(client, "%t %t", "TAG", "ERROR_EMOTE_INFO", g_Emotes[iFile][iItem].name);
+			return Plugin_Handled;
+		}
+
+		CreateEmote(target_list[i], sAnim1, sAnim2, sSound, bIsLoop);
+	}
+
+	return Plugin_Handled;
+}
+
+Action Command_SetDance(int client, int args)
+{
+	if (args != 1 && args != 3)
+	{
+		CReplyToCommand(client, "%t: sm_setdance <#userid|name> <configid|blank:random> <emoteid|blank:random>", "USAGE");
+		return Plugin_Handled;
+	}
+
+	if (IsValidAccess(client))
+		CReplyToCommand(client, "%t %t", "TAG", "NO_DANCES_ACCESS_FLAG");
+
+	char target[65];
+	GetCmdArg(1, target, sizeof(target));
+
+	char
+		target_name[MAX_TARGET_LENGTH];
+
+	int
+		target_list[MAXPLAYERS],
+		target_count;
+
+	bool
+		tn_is_ml;
+
+	if ((target_count = ProcessTargetString(target, client, target_list, MAXPLAYERS, COMMAND_FILTER_ALIVE, target_name, sizeof(target_name), tn_is_ml)) <= 0)
+	{
+		ReplyToTargetError(client, target_count);
+		return Plugin_Handled;
+	}
+
+	if (args == 3)
+	{
+		for (int i = 0; i < target_count; i++)
+		{
+			CreateRandomEmote(target_list[i], true);
+		}
+	}
+
+	int iFile = GetCmdArgInt(2);
+	if (!CheckConfig(iFile))
+	{
+		CReplyToCommand(client, "%t %t", "TAG", "INVALID_CONFIG_ID", g_iFilesFnemotesCounter);
+		return Plugin_Handled;
+	}
+
+	int iItem = GetCmdArgInt(3);
+	if (!CheckEmote(iFile, iItem))
+	{
+		CReplyToCommand(client, "%t %t", "TAG", "INVALID_EMOTE_ID", g_iEmotesSize[iFile]);
+		return Plugin_Handled;
+	}
+
+	for (int i = 0; i < target_count; i++)
+	{
+		char
+			sAnim1[32],
+			sAnim2[32],
+			sSound[64];
+
+		bool
+			bIsLoop;
+
+		if (!GetEmoteInfo(iFile, g_Dances[iFile][iItem].name, sAnim1, sizeof(sAnim1), sAnim2, sizeof(sAnim2), sSound, sizeof(sSound), bIsLoop, true))
+		{
+			CPrintToChat(client, "%t %t", "TAG", "ERROR_EMOTE_INFO", g_Dances[iFile][iItem].name);
+			return Plugin_Handled;
+		}
+
+		CreateEmote(target_list[i], sAnim1, sAnim2, sSound, bIsLoop);
 	}
 
 	return Plugin_Handled;
@@ -280,6 +374,7 @@ public void OnPluginEnd()
 {
 	StopDancer();
 	OnPluginEnd_vipcore();
+	OnPluginEnd_resources();
 }
 
 public void OnClientPutInServer(int client)
@@ -542,4 +637,55 @@ void StopDancer()
 		if (IsValidClient(i) && g_bClientDancing[i])
 			StopEmote(i);
 	}
+}
+
+/**
+ * Checks if a client has valid access.
+ *
+ * @param client The client index to check.
+ * @return True if the client has valid access, false otherwise.
+ */
+bool IsValidAccess(int client, bool isDance = false)
+{
+	if (g_bVipCore)
+	{
+		if (VIP_IsClientVIP(client))
+			return true;
+	}
+	else
+	{
+		char sFlagAdmin[32];
+		if (isDance)
+			g_cvarFlagDancesMenu.GetString(sFlagAdmin, sizeof(sFlagAdmin));
+		else
+			g_cvarFlagEmotesMenu.GetString(sFlagAdmin, sizeof(sFlagAdmin));
+
+		if (CheckAdminFlags(client, ReadFlagString(sFlagAdmin)))
+			return true;
+	}
+
+	return false;
+}
+
+bool CheckConfig(int iConfig)
+{
+	if (iConfig < 1 || iConfig > g_iFilesFnemotesCounter)
+		return false;
+
+	return true;
+}
+
+bool CheckEmote(int iConfig, int iEmote, bool bIsDance = false)
+{
+	int iEmoteSize;
+
+	if (bIsDance)
+		iEmoteSize = g_iDancesSize[iConfig];
+	else
+		iEmoteSize = g_iEmotesSize[iConfig];
+
+	if (iEmote < 1 || iEmote > iEmoteSize)
+		return false;
+
+	return true;
 }

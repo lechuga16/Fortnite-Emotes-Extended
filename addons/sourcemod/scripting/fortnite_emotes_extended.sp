@@ -180,7 +180,7 @@ public void OnPluginStart()
 	RegAdminCmd("sm_setemote", Command_SetEmote, ADMFLAG_GENERIC);
 	RegAdminCmd("sm_setdance", Command_SetDance, ADMFLAG_GENERIC);
 
-	AutoExecConfig(true, "fortnite_emotes_extended_l4d");
+	AutoExecConfig(false, "fortnite_emotes_extended");
 
 	if (g_bLateload)
 	{

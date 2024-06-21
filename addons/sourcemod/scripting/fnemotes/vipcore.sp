@@ -25,8 +25,10 @@ void OnPluginEnd_vipcore()
 {
 	if (g_bVipCore && CanTestFeatures() && GetFeatureStatus(FeatureType_Native, "VIP_UnregisterFeature") == FeatureStatus_Available)
 	{
-		if (VIP_IsValidFeature(g_sFeature))
-			VIP_UnregisterFeature(g_sFeature);
+		if (!VIP_IsValidFeature(g_sFeature))
+			return;
+		
+		VIP_UnregisterFeature(g_sFeature);
 	}
 }
 
@@ -36,6 +38,9 @@ void OnPluginEnd_vipcore()
 
 void VIP_OnVIPLoaded_vipcore()
 {
+	if (VIP_IsValidFeature(g_sFeature))
+		return;
+
 	VIP_RegisterFeature(g_sFeature, VIP_NULL, SELECTABLE, OnItemSelect, OnItemDisplay);
 }
 

@@ -172,7 +172,7 @@ public void OnPluginStart()
 	g_cvarHideWeapons		= CreateConVar("sm_emotes_hide_weapons", "1", "Hide weapons when dancing", CVAR_FLAGS, true, 0.0, true, 1.0);
 	g_cvarHidePlayers		= CreateConVar("sm_emotes_hide_enemies", "0", "Hide enemy players when dancing", CVAR_FLAGS, true, 0.0, true, 1.0);
 	g_cvarTeleportBack		= CreateConVar("sm_emotes_teleportonend", "1", "Teleport back to the exact position when he started to dance. (Some maps need this for teleport triggers)", CVAR_FLAGS, true, 0.0, true, 1.0);
-	g_cvarSpeed				= CreateConVar("sm_emotes_speed", "1.0", "Sets the playback speed of the animation. default (1.0)", CVAR_FLAGS, true, 0.0);
+	g_cvarSpeed				= CreateConVar("sm_emotes_speed", "0.8", "Sets the playback speed of the animation. default (1.0)", CVAR_FLAGS, true, 0.0);
 	g_cvarDownloadResources = CreateConVar("sm_emotes_download_resources", "1", "Download method for the resources", CVAR_FLAGS, true, 0.0, true, 1.0);
 
 	RegConsoleCmd("sm_emote", Command_Menu);

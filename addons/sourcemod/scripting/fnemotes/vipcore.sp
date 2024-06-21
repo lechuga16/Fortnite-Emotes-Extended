@@ -15,7 +15,6 @@ static const char g_sFeature[] = "ForniteEmotes";
 
 void OnPluginStart_vipcore()
 {
-	g_bVipCore = LibraryExists("vip_core");
 	if (!g_bLateload || !g_bVipCore)
 		return;
 
@@ -42,6 +41,12 @@ void VIP_OnVIPLoaded_vipcore()
 
 public bool OnItemSelect(int client, char[] sFeatureName)
 {
+	if(g_bLateload)
+	{
+		CReplyToCommand(client, "%t %t", "TAG", "LATLOAD");
+		return false;
+	}
+
 	Menu menu = new Menu(MenuHandler_Vip);
 
 	char title[65];

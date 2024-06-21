@@ -182,6 +182,12 @@ public void OnPluginStart()
 
 	AutoExecConfig(true, "fortnite_emotes_extended_l4d");
 
+	if (g_bLateload)
+	{
+		g_bVipCore	 = LibraryExists("vip_core");
+		g_bPause	 = LibraryExists("pause");
+	}
+
 	OnPluginStart_resources();
 	OnPluginStart_vipcore();
 }
@@ -190,6 +196,12 @@ public Action Command_Menu(int client, int args)
 {
 	if (!IsValidClient(client))
 		return Plugin_Handled;
+	
+	if(g_bLateload)
+	{
+		CReplyToCommand(client, "%t %t", "TAG", "LATLOAD");
+		return Plugin_Handled;
+	}
 
 	if (IsValidAccess(client))
 		Menu_Main(client);
@@ -203,6 +215,12 @@ public Action Command_Dance(int client, int args)
 {
 	if (!IsValidClient(client))
 		return Plugin_Handled;
+
+	if(g_bLateload)
+	{
+		CReplyToCommand(client, "%t %t", "TAG", "LATLOAD");
+		return Plugin_Handled;
+	}
 
 	if (IsValidAccess(client))
 		Menu_Main(client);
@@ -220,6 +238,12 @@ Action Command_SetEmote(int client, int args)
 		return Plugin_Handled;
 	}
 
+	if(g_bLateload)
+	{
+		CReplyToCommand(client, "%t %t", "TAG", "LATLOAD");
+		return Plugin_Handled;
+	}
+	
 	if (IsValidAccess(client))
 		CReplyToCommand(client, "%t %t", "TAG", "NO_EMOTES_ACCESS_FLAG");
 
@@ -368,6 +392,12 @@ public void OnConfigsExecuted()
 public void OnMapStart()
 {
 	OnMapStart_Resources();
+}
+
+public void OnMapEnd()
+{
+	if(g_bLateload)
+		g_bLateload = false;
 }
 
 public void OnPluginEnd()

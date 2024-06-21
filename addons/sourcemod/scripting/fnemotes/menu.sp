@@ -73,7 +73,7 @@ Action Menu_Emotes(int client)
 		for (int j = 1; j <= g_iEmotesSize[i]; j++)
 		{
 			char
-				sIndex[4];
+				sIndex[8];
 
 			Format(sIndex, sizeof(sIndex), "%d:%d", i, j);
 			AddTranslatedMenuItem(menu, sIndex, g_Emotes[i][j].name, client);
@@ -112,7 +112,7 @@ int MenuHandlerEmotes(Menu menu, MenuAction action, int client, int param2)
 				ExplodeString(sItem, ":", sBuffer, sizeof(sBuffer), sizeof(sBuffer[]));
 				iFile = StringToInt(sBuffer[0]);
 				iItem = StringToInt(sBuffer[1]);
-
+				
 				if (!GetEmoteInfo(iFile, g_Emotes[iFile][iItem].name, sAnim1, sizeof(sAnim1), sAnim2, sizeof(sAnim2), sSound, sizeof(sSound), bIsLoop))
 				{
 					CPrintToChat(client, "%t %t", "TAG", "ERROR_EMOTE_INFO", g_Emotes[iFile][iItem].name);
@@ -145,7 +145,7 @@ Action Menu_Dances(int client)
 		for (int j = 1; j <= g_iDancesSize[i]; j++)
 		{
 			char
-				sIndex[4];
+				sIndex[8];
 
 			Format(sIndex, sizeof(sIndex), "%d:%d", i, j);
 			AddTranslatedMenuItem(menu, sIndex, g_Dances[i][j].name, client);
@@ -190,8 +190,6 @@ int MenuHandlerDances(Menu menu, MenuAction action, int client, int param2)
 					CPrintToChat(client, "%t %t", "TAG", "ERROR_EMOTE_INFO", g_Dances[iFile][iItem].name);
 					return 0;
 				}
-				PrintToServer("sItem: %s | iFile: %d | iItem: %d", sItem, iFile, iItem);
-				PrintToServer("Dance: %s, Anim1: %s, Anim2: %s, Sound: %s, Loop: %d", g_Dances[iFile][iItem].name, sAnim1, sAnim2, sSound, bIsLoop);
 				CreateEmote(client, sAnim1, sAnim2, sSound, bIsLoop);
 
 			}

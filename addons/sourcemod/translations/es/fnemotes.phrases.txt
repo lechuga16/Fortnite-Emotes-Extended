@@ -114,4 +114,9 @@
 	{
 		"es"			"Bailes"
 	}
+
+	"LATLOAD"
+	{
+		"es"			"El complemento cargo de forma tardia, se deshabilita hasta el siguiente capitulo."
+	}
 }

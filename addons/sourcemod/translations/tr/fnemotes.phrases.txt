@@ -104,4 +104,9 @@
 	{
 		"tr"			"Danslar"  
 	}
+
+	"LATLOAD"
+	{
+		"tr"			"Plugin geç yüklendi, bir sonraki bölüme kadar devre dışı bırakıldı."
+	}
 }

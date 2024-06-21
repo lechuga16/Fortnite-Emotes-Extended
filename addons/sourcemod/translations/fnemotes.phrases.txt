@@ -114,5 +114,10 @@
 	"TITLE_DANCES_MENU"
 	{
 		"en"			"Dances"
-	}	
+	}
+	
+	"LATLOAD"
+	{
+		"en"			"The plugin loaded late, it is disabled until the next chapter."
+	}
 }

@@ -351,7 +351,5 @@ bool GetEmoteInfo(const int iFile, const char[] sName, char[] sAnim1, int iAnim1
 	g_kvResources[iFile].GetString("sound", sBuffer, sizeof(sBuffer));
 	strcopy(sSound, iSoundLeng, sBuffer);
 	bIsLooping = view_as<bool>(g_kvResources[iFile].GetNum("isloop", 0));
-
-	PrintToServer("Anim1: %s, Anim2: %s, Sound: %s, Loop: %d", sAnim1, sAnim2, sSound, bIsLooping);
 	return true;
 }

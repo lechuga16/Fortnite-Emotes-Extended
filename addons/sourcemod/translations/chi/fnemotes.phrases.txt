@@ -55,6 +55,11 @@
 		"chi"			"您现在不能使用！！！"
 	}
 
+	"INVALID_CONFIG_ID"
+	{
+		"chi"			"无效的配置编号，应该在(1-%d)之间或0为随机"
+	}
+
 	"INVALID_EMOTE_ID"
 	{
 		"chi"			"无效的表情动作编号，应该在(1-86)之间！"
@@ -99,7 +104,12 @@
 	{
 		"chi"			"表情动作"
 	}	
-	
+
+	"ERROR_EMOTE_INFO"
+	{
+		"chi"			"获取{red}%s{default}信息时出错"
+	}
+
 	"TITLE_DANCES_MENU"
 	{
 		"chi"			"舞蹈"

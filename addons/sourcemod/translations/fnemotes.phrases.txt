@@ -23,7 +23,6 @@
 	"NOTSURVIVOR"
 	{
 		"en"			"You are not a survivor!"
-	
 	}
 
 	"PAUSE_MODE"

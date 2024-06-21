@@ -55,6 +55,11 @@
 		"tr"			"Şu anda kullanamazsın!"		
 	}
 
+	"INVALID_CONFIG_ID"
+	{
+		"tr"			"Geçersiz Config ID, (1-%d) arasında olmalıdır veya rastgele için 0"
+	}
+
 	"INVALID_EMOTE_ID"
 	{
 		"tr"			"Geçersiz Emote ID, (1-86) arasında olmalıdır"	
@@ -99,7 +104,12 @@
 	{
 		"tr"			"Emotelar"
 	}	
-	
+
+	"ERROR_EMOTE_INFO"
+	{
+		"tr"			"{red}%s{default} bilgileri alınamadı"
+	}
+
 	"TITLE_DANCES_MENU"
 	{
 		"tr"			"Danslar"  

@@ -239,7 +239,7 @@ void CreateRandomEmote(int client, bool IsDance = false)
 	}
 	else
 	{
-		if (GetEmoteInfo(iFile, g_Emotes[iFile][iIndex].name, sAnim1, sizeof(sAnim1), sAnim2, sizeof(sAnim2), sSound, sizeof(sSound), bIsLoop))
+		if (!GetEmoteInfo(iFile, g_Emotes[iFile][iIndex].name, sAnim1, sizeof(sAnim1), sAnim2, sizeof(sAnim2), sSound, sizeof(sSound), bIsLoop))
 			CPrintToChat(client, "%t %t", "TAG", "ERROR_EMOTE_INFO", g_Emotes[iFile][iIndex].name);
 	}
 

@@ -7,29 +7,44 @@
 			G L O B A L   V A R S
 *****************************************************************/
 
-#define FNEMOTES_PATH	"data/fnemotes.cfg"
-#define KEY_MODELS_L4D2 "models_l4d2"
-#define KEY_MODELS_L4D	"models_l4d"
+#define FNEMOTES_DIR	"data/fnemotes"
+#define FNEMOTES_LIMIT_FILES	5	// Max number of files in the fnemotes directory. Sourcepawn doesn't support dynamic gloval arrays
+
+#define KEY_MODELS 		"models"
 #define KEY_SOUNDS		"sounds"
+#define KEY_EMOTES		"emotes"
+#define KEY_DANCES		"dances"
 #define KEY_SIZE		"size"
 #define MAX_RESOURCES	120
 
 enum struct Resources
 {
-	int	 id;
 	char path[PLATFORM_MAX_PATH];
 }
 
 KeyValues
-	g_kvResources;
+	g_kvResources[FNEMOTES_LIMIT_FILES];
 
 Resources
-	g_Models[MAX_RESOURCES],
-	g_Sounds[MAX_RESOURCES];
+	g_Models[FNEMOTES_LIMIT_FILES][MAX_RESOURCES], // [] = file index, [] = resource index
+	g_Sounds[FNEMOTES_LIMIT_FILES][MAX_RESOURCES]; // [] = file index, [] = resource index
 
 int
-	g_iModelSize,
-	g_iSoundsSize;
+	g_iModelSize[FNEMOTES_LIMIT_FILES], // [] = file index
+	g_iSoundsSize[FNEMOTES_LIMIT_FILES], // [] = file index	
+	g_iEmotesSize[FNEMOTES_LIMIT_FILES], // [] = file index
+	g_iDancesSize[FNEMOTES_LIMIT_FILES], // [] = file index
+	g_iFilesFnemotesCounter; // Counter for the number of files in the fnemotes directory
+
+enum struct FilesFnEmotes
+{
+	char name[32];
+}
+
+FilesFnEmotes
+	g_FilesConfig[FNEMOTES_LIMIT_FILES], // Array to store the names of the .cfg files in the fnemotes directory
+	g_Emotes[FNEMOTES_LIMIT_FILES][MAX_RESOURCES], // [] = file index, [] = emote index
+	g_Dances[FNEMOTES_LIMIT_FILES][MAX_RESOURCES]; // [] = file index, [] = dance index
 
 /*****************************************************************
 			F O R W A R D   P U B L I C S
@@ -37,68 +52,115 @@ int
 
 OnPluginStart_resources()
 {
-	if (!g_cvarDownloadResources.BoolValue)
-		return;
+	if (!LoadResources())
+		SetFailState("Couldn't load resources from [%s] folder", FNEMOTES_DIR);
 
-	char sFnemotesPatch[PLATFORM_MAX_PATH];
-	BuildPath(Path_SM, sFnemotesPatch, sizeof(sFnemotesPatch), FNEMOTES_PATH);
-
-	g_kvResources = new KeyValues("Resources");
-
-	if (!g_kvResources.ImportFromFile(sFnemotesPatch))
-		SetFailState("Couldn't load %s", sFnemotesPatch);
-	else
-		ReadResources();
-
-	RegConsoleCmd("sm_emotes_resources", Command_resources);
+	RegConsoleCmd("sm_emotes_resources", Command_Resources);
+	RegAdminCmd("sm_emotes_reloadresources", Command_ReloadResources, ADMFLAG_GENERIC);
 }
 
-public Action Command_resources(int client, int args)
+public Action Command_Resources(int client, int args)
 {
-	ReplyToCommand(client, "--------------------");
-	for (int i = 1; i <= g_iModelSize; i++)
+	for (int i = 1; i <= g_iFilesFnemotesCounter; i++)
 	{
-		ReplyToCommand(client, "Model [%d] - [%s]", i, g_Models[i].path);
-	}
+		ReplyToCommand(client, "\nFile [%s]", g_FilesConfig[i].name);
+		ReplyToCommand(client, "--------------------");
+		for (int j = 1; j <= g_iModelSize[i]; j++)
+		{
+			ReplyToCommand(client, "Model [%d] - [%s]", j, g_Models[i][j].path);
+		}
 
-	ReplyToCommand(client, "--------------------");
-	for (int i = 1; i <= g_iSoundsSize; i++)
-	{
-		ReplyToCommand(client, "Sound [%d] - [%s]", i, g_Sounds[i].path);
+		ReplyToCommand(client, "--------------------");
+		for (int j = 1; j <= g_iSoundsSize[i]; j++)
+		{
+			ReplyToCommand(client, "Sound [%d] - [%s]", j, g_Sounds[i][j].path);
+		}
+		ReplyToCommand(client, "--------------------");
+
+		for (int j = 1; j <= g_iEmotesSize[i]; j++)
+		{
+			ReplyToCommand(client, "Emote [%d] - [%s]", j, g_Emotes[i][j].name);
+		}
+		ReplyToCommand(client, "--------------------");
+
+		for (int j = 1; j <= g_iDancesSize[i]; j++)
+		{
+			ReplyToCommand(client, "Dance [%d] - [%s]", j, g_Dances[i][j].name);
+		}
+		ReplyToCommand(client, "--------------------");
 	}
-	ReplyToCommand(client, "--------------------");
 
 	return Plugin_Handled;
 }
 
-OnMapStart_Resources()
+public Action Command_ReloadResources(int client, int args)
 {
-	if (!g_cvarDownloadResources.BoolValue)
+	for(int i = 1; i <= g_iFilesFnemotesCounter; i++)
+	{
+		delete g_kvResources[i];
+	}
+
+	if (!LoadResources())
+	{
+		ReplyToCommand(client, "Couldn't reload resources from [%s] folder", FNEMOTES_DIR);
+		return Plugin_Handled;
+	}
+
+	ReplyToCommand(client, "Resources reloaded successfully");
+	return Plugin_Handled;
+
+}
+
+void OnPluginEnd_resources()
+{
+	for(int i = 1; i <= g_iFilesFnemotesCounter; i++)
+	{
+		delete g_kvResources[i];
+	}
+
+}
+void OnConfigsExecuted_resources()
+{
+	if (!g_cvarDownloadResources.BoolValue || g_bLateload)
 		return;
 
-	for (int i = 1; i <= g_iModelSize; i++)
+	for(int i = 1; i <= g_iFilesFnemotesCounter; i++)
 	{
-		AddFileToDownloadsTable(g_Models[i].path);
+		for (int j = 1; j <= g_iModelSize[i]; j++)
+		{
+			AddFileToDownloadsTable(g_Models[i][j].path);
+		}
+
+		for (int j = 1; j <= g_iSoundsSize[i]; j++)
+		{
+			AddFileToDownloadsTable(g_Sounds[i][j].path);
+		}
 	}
+}
 
-	for (int i = 1; i <= g_iSoundsSize; i++)
+void OnMapStart_Resources()
+{
+	if(g_bLateload)
+		return;
+
+	for(int i = 1; i <= g_iFilesFnemotesCounter; i++)
 	{
-		AddFileToDownloadsTable(g_Sounds[i].path);
-	}
+		for (int j = 1; j <= g_iModelSize[i]; j++)
+		{
+			if (StrContains(g_Models[i][j].path, ".mdl") == -1)
+				continue;
 
-	if (g_iEngine == Engine_Left4Dead)
-		PrecacheModel("models/fortnite_emotes/fnemotes_l4d.mdl", true);
+			PrecacheModel(g_Models[i][j].path, true);
+		}
 
-	if (g_iEngine == Engine_Left4Dead2)
-		PrecacheModel("models/fortnite_emotes/fnemotes_l4d2.mdl", true);
-
-	char
-		g_sSounds[MAX_RESOURCES];
-	for (int i = 1; i <= g_iSoundsSize; i++)
-	{
-		Format(g_sSounds, sizeof(g_sSounds), g_Sounds[i].path);
-		ReplaceStringEx(g_sSounds, sizeof(g_sSounds), "sound/", ""); // Remove sound/ prefix
-		PrecacheSound(g_sSounds);
+		char
+			g_sSounds[MAX_RESOURCES];
+		for (int j = 1; j <= g_iSoundsSize[i]; j++)
+		{
+			Format(g_sSounds, sizeof(g_sSounds), g_Sounds[i][j].path);
+			ReplaceStringEx(g_sSounds, sizeof(g_sSounds), "sound/", "");	// Remove sound/ prefix
+			PrecacheSound(g_sSounds);
+		}
 	}
 }
 
@@ -106,36 +168,188 @@ OnMapStart_Resources()
 			P L U G I N   F U N C T I O N S
 *****************************************************************/
 
-/**
- * Reads the resources from the keyvalue file and populates the g_Models and g_Sounds arrays.
- * This function is used to retrieve the paths of models and sounds for the Fortnite emotes downloader.
- */
-void ReadResources()
+bool LoadResources()
 {
-	g_kvResources.Rewind();
+	if(!ReadDirectory())
+	{
+		LogError("Couldn't find any .cfg files in [%s] folder", FNEMOTES_DIR);
+		return false;
+	}
 
-	if (g_iEngine == Engine_Left4Dead)
-		g_kvResources.JumpToKey(KEY_MODELS_L4D);
+	for(int i = 1; i <= g_iFilesFnemotesCounter; i++)
+	{
+		char sFnemotesPatch[PLATFORM_MAX_PATH];
+		BuildPath(Path_SM, sFnemotesPatch, sizeof(sFnemotesPatch), "%s/%s", FNEMOTES_DIR, g_FilesConfig[i].name);
 
-	if (g_iEngine == Engine_Left4Dead2)
-		g_kvResources.JumpToKey(KEY_MODELS_L4D2);
+		g_kvResources[i] = new KeyValues("Resources");
+	
+		if (!g_kvResources[i].ImportFromFile(sFnemotesPatch))
+		{
+			delete g_kvResources[i];
+			LogError("Couldn't import file [%s]", sFnemotesPatch);
+			return false;
+		}
 
-	g_iModelSize = g_kvResources.GetNum(KEY_SIZE, -1);
+		if(!ReadResources(i))
+		{
+			LogError("Couldn't read resources from file [%s]", g_FilesConfig[i].name);
+			continue;
+		}
+		
+		char sBuffer[62];
+		strcopy(sBuffer, sizeof(sBuffer), g_FilesConfig[i].name);
+		ReplaceString(sBuffer, sizeof(sBuffer), ".cfg", "");	// Remove .cfg extension
+		Format(sBuffer, sizeof(sBuffer), "%s.phrases", sBuffer);
+		LoadTranslation(sBuffer);
+	}
+
+	return true;
+}
+
+
+bool ReadResources(int iFile)
+{
+	g_kvResources[iFile].Rewind();
+	if(!g_kvResources[iFile].JumpToKey(KEY_MODELS))
+	{
+		LogError("Couldn't find key [%s] in file [%s]", KEY_MODELS, g_FilesConfig[iFile].name);
+		return false;
+	}
+	
+	g_iModelSize[iFile] = g_kvResources[iFile].GetNum(KEY_SIZE, 0);
+	if (g_iModelSize[iFile] == 0)
+	{
+		LogError("Couldn't find key [%s => %s] in file [%s]", KEY_MODELS, KEY_SIZE, g_FilesConfig[iFile].name);
+		return false;
+	}
 
 	char sIndex[4];
-	for (int i = 1; i <= g_iModelSize; i++)
+	for (int j = 1; j <= g_iModelSize[iFile]; j++)
 	{
-		IntToString(i, sIndex, sizeof(sIndex));
-		g_kvResources.GetString(sIndex, g_Models[i].path, PLATFORM_MAX_PATH);
+		IntToString(j, sIndex, sizeof(sIndex));
+		g_kvResources[iFile].GetString(sIndex, g_Models[iFile][j].path, sizeof(g_Models[][].path));
 	}
 
-	g_kvResources.GoBack();
-	g_kvResources.JumpToKey(KEY_SOUNDS);
-	g_iSoundsSize = g_kvResources.GetNum(KEY_SIZE, -1);
-
-	for (int i = 1; i <= g_iSoundsSize; i++)
+	g_kvResources[iFile].GoBack();
+	if(!g_kvResources[iFile].JumpToKey(KEY_SOUNDS))
 	{
-		IntToString(i, sIndex, sizeof(sIndex));
-		g_kvResources.GetString(sIndex, g_Sounds[i].path, PLATFORM_MAX_PATH);
+		LogError("Couldn't find key [%s] in file [%s]", KEY_SOUNDS, g_FilesConfig[iFile].name);
+		return false;
 	}
+	g_iSoundsSize[iFile] = g_kvResources[iFile].GetNum(KEY_SIZE, 0);
+	if (g_iSoundsSize[iFile] == 0)
+	{
+		LogError("Couldn't find key [%s => %s] in file [%s]", KEY_SOUNDS, KEY_SIZE, g_FilesConfig[iFile].name);
+		return false;
+	}
+
+	for (int j = 1; j <= g_iSoundsSize[iFile]; j++)
+	{
+		IntToString(j, sIndex, sizeof(sIndex));
+		g_kvResources[iFile].GetString(sIndex, g_Sounds[iFile][j].path, sizeof(g_Models[][].path));
+	}
+
+	g_kvResources[iFile].GoBack();
+	if(!g_kvResources[iFile].JumpToKey(KEY_EMOTES))
+	{
+		LogError("Couldn't find key [%s] in file [%s]", KEY_EMOTES, g_FilesConfig[iFile].name);
+		return false;
+	}
+	g_iEmotesSize[iFile] = g_kvResources[iFile].GetNum(KEY_SIZE, 0);
+	if (g_iEmotesSize[iFile] == 0)
+	{
+		LogError("Couldn't find key [%s => %s] in file [%s]", KEY_EMOTES, KEY_SIZE, g_FilesConfig[iFile].name);
+		return false;
+	}
+
+	for (int j = 1; j <= g_iEmotesSize[iFile]; j++)
+	{
+		IntToString(j, sIndex, sizeof(sIndex));
+		g_kvResources[iFile].GetString(sIndex, g_Emotes[iFile][j].name, sizeof(g_Emotes[][].name));
+	}
+
+	g_kvResources[iFile].GoBack();
+	if(!g_kvResources[iFile].JumpToKey(KEY_DANCES))
+	{
+		LogError("Couldn't find key [%s] in file [%s]", KEY_DANCES, g_FilesConfig[iFile].name);
+		return false;
+	}
+	g_iDancesSize[iFile] = g_kvResources[iFile].GetNum(KEY_SIZE, 0);
+	if (g_iDancesSize[iFile] == 0)
+	{
+		LogError("Couldn't find key [%s => %s] in file [%s]", KEY_DANCES, KEY_SIZE, g_FilesConfig[iFile].name);
+		return false;
+	}
+
+	for (int j = 1; j <= g_iDancesSize[iFile]; j++)
+	{
+		IntToString(j, sIndex, sizeof(sIndex));
+		g_kvResources[iFile].GetString(sIndex, g_Dances[iFile][j].name, sizeof(g_Dances[][].name));
+	}
+
+	return true;
+}
+
+/**
+ * Reads the directory specified by `FNEMOTES_DIR` and populates the `g_FilesConfig` array with the names of the .cfg files found.
+ * 
+ * @return True if at least one .cfg file is found in the directory, false otherwise.
+ */
+bool ReadDirectory()
+{
+	char sPath[PLATFORM_MAX_PATH];
+
+	BuildPath(Path_SM, sPath, sizeof(sPath), FNEMOTES_DIR);
+
+	if (!DirExists(sPath))
+		return false;
+
+	DirectoryListing dL = OpenDirectory(sPath);
+
+	g_iFilesFnemotesCounter = 1;
+	while (dL.GetNext(g_FilesConfig[g_iFilesFnemotesCounter].name, sizeof(g_FilesConfig[].name)))
+	{
+		if (StrContains(g_FilesConfig[g_iFilesFnemotesCounter].name, ".cfg") == -1)
+			continue;
+
+		g_iFilesFnemotesCounter++;
+	}
+	g_iFilesFnemotesCounter--; // the last array is always empty, we don't need it
+
+	if (g_iFilesFnemotesCounter == 0)
+		return false;
+
+	return true;
+}
+
+bool GetEmoteInfo(const int iFile, const char[] sName, char[] sAnim1, int iAnim1Leng, char[] sAnim2, int iAnim2Leng, char[] sSound, int iSoundLeng, bool &bIsLooping, bool bIsDance = false)
+{
+	
+	g_kvResources[iFile].Rewind();
+
+	char 
+		sBuffer[64];
+
+	if(bIsDance)
+	{
+		if (!g_kvResources[iFile].JumpToKey(KEY_DANCES))
+			return false;
+	}
+	else
+	{
+		if (!g_kvResources[iFile].JumpToKey(KEY_EMOTES))
+			return false;
+	}
+
+	if (!g_kvResources[iFile].JumpToKey(sName))
+		return false;
+		
+	g_kvResources[iFile].GetString("anim1", sBuffer, sizeof(sBuffer));
+	strcopy(sAnim1, iAnim1Leng, sBuffer);
+	g_kvResources[iFile].GetString("anim2", sBuffer, sizeof(sBuffer));
+	strcopy(sAnim2, iAnim2Leng, sBuffer);
+	g_kvResources[iFile].GetString("sound", sBuffer, sizeof(sBuffer));
+	strcopy(sSound, iSoundLeng, sBuffer);
+	bIsLooping = view_as<bool>(g_kvResources[iFile].GetNum("isloop", 0));
+	return true;
 }

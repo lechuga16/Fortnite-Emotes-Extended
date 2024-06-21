@@ -15,7 +15,6 @@ static const char g_sFeature[] = "ForniteEmotes";
 
 void OnPluginStart_vipcore()
 {
-	g_bVipCore = LibraryExists("vip_core");
 	if (!g_bLateload || !g_bVipCore)
 		return;
 
@@ -42,6 +41,12 @@ void VIP_OnVIPLoaded_vipcore()
 
 public bool OnItemSelect(int client, char[] sFeatureName)
 {
+	if(g_bLateload)
+	{
+		CReplyToCommand(client, "%t %t", "TAG", "LATLOAD");
+		return false;
+	}
+
 	Menu menu = new Menu(MenuHandler_Vip);
 
 	char title[65];
@@ -73,18 +78,18 @@ int MenuHandler_Vip(Menu menu, MenuAction action, int param1, int param2)
 			{
 				case 0:
 				{
-					RandomEmote(client);
-					Menu_Dance(client);
+					CreateRandomEmote(client);
+					Menu_Main(client);
 				}
 				case 1:
 				{
-					RandomDance(client);
-					Menu_Dance(client);
+					CreateRandomEmote(client, true);
+					Menu_Main(client);
 				}
 				case 2:
-					EmotesMenu(client);
+					Menu_Emotes(client);
 				case 3:
-					DancesMenu(client);
+					Menu_Dances(client);
 			}
 		}
 		case MenuAction_End:

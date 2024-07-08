@@ -243,9 +243,6 @@ Action Command_SetEmote(int client, int args)
 		CReplyToCommand(client, "%t %t", "TAG", "LATLOAD");
 		return Plugin_Handled;
 	}
-	
-	if (IsValidAccess(client))
-		CReplyToCommand(client, "%t %t", "TAG", "NO_EMOTES_ACCESS_FLAG");
 
 	char target[65];
 	GetCmdArg(1, target, sizeof(target));
@@ -317,9 +314,6 @@ Action Command_SetDance(int client, int args)
 		CReplyToCommand(client, "%t: sm_setdance <#userid|name> <configid|blank:random> <emoteid|blank:random>", "USAGE");
 		return Plugin_Handled;
 	}
-
-	if (IsValidAccess(client))
-		CReplyToCommand(client, "%t %t", "TAG", "NO_DANCES_ACCESS_FLAG");
 
 	char target[65];
 	GetCmdArg(1, target, sizeof(target));
